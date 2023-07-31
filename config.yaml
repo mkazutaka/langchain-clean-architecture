@@ -1,0 +1,10 @@
+openai:
+  api_key: "${OPENAI_API_KEY}"
+  model_name: "${OPENAI_MODEL_NAME:gpt-3.5-turbo}"
+
+azure:
+  openai:
+    deployment_name: "${AZURE_OPENAI_DEPLOYMENT_NAME}"
+    api_key: "${AZURE_OPENAI_API_KEY}"
+    api_base: "${AZURE_OPENAI_API_BASE}"
+    api_version: "${AZURE_OPENAI_API_VERSION:2023-05-15}"

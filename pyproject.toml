@@ -1,0 +1,56 @@
+[tool.poetry]
+name = "lca"
+version = "0.1.0"
+description = "Example of API server implementation using Langchain based on clean architecture"
+authors = ["mkazutaka <paper.sheet.kami@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.100.0"
+langchain = "^0.0.247"
+dependency-injector = "^4.41.0"
+uvicorn = "^0.23.1"
+openai = "^0.27.8"
+taskipy = "^1.11.0"
+python-dotenv = "^1.0.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+httpx = "^0.24.1"
+black = "^23.7.0"
+flake8 = "^6.0.0"
+isort = "^5.12.0"
+mypy = "^1.4.1"
+
+[tool.pysen.lint]
+enable_black = true
+enable_flake8 = true
+enable_isort = true
+enable_mypy = true
+mypy_preset = "strict"
+line_length = 88
+py_version = "py37"
+[[tool.pysen.lint.mypy_targets]]
+paths = ["app"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.taskipy.settings]
+runner = "dotenv run"
+
+[tool.taskipy.tasks]
+dev = "uvicorn app.main:app --reload"
+
+fmt = "task fmt-black && task fmt-isort"
+fmt-black = "black app"
+fmt-isort = "isort app"
+lint = "task lint-mypy && task lint-flake8"
+lint-mypy = "mypy app --explicit-package-bases"
+lint-flake8 = "flake8 --show-source app"
+test = "python -m pytest --ignore=tests/local_tests"
+e2e = "python -m pytest --ignore=tests/e2e_tests"
+docker-build = "docker build -t lca ."
+docker-run = "docker run -p 8000:8000 --env-file=.env lca"
